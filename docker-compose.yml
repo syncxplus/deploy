@@ -9,10 +9,19 @@ services:
         volumes:
             - ./nginx:/etc/nginx/conf.d
             - ./letsencrypt:/etc/letsencrypt
-        links:
-            - rancher:rancher
         depends_on:
+            - jenkins
             - rancher
+        links:
+            - jenkins:jenkins
+            - rancher:rancher
+    jenkins:
+        image: jenkins:2.46.2
+        restart: always
+        ports:
+            - '50000:50000'
+        volumes:
+            - ./jenkins:/var/jenkins_home
     rancher:
         image: rancher/server:v1.5.7
         restart: always
