@@ -3,3 +3,4 @@
 !/nginx
 !/certbot
 !/docker-compose.yml
+!/startup

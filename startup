@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+workdir=$(cd `dirname $0`; pwd)
+
+docker run --name j.syncxplus.com --restart always \
+    -p 50000:50000 \
+    -v $workdir/jenkins:/var/jenkins_home \
+    -d jenkins:2.46.2
+
+docker run --name r.syncxplus.com --restart always -p 8080:8080 -d rancher/server:v1.5.7
+
+docker run --name nginx --restart always \
+    --link j.syncxplus.com:jenkins \
+    --link r.syncxplus.com:rancher \
+    -p 80:80 \
+    -p 443:443 \
+    -v $workdir/letsencrypt:/etc/letsencrypt \
+    -v $workdir/nginx:/etc/nginx/conf.d \
+    -d registry.aliyuncs.com/syncxplus/nginx:1.11.10
+    
