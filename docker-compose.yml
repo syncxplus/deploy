@@ -1,0 +1,20 @@
+version: '2'
+services:
+    nginx:
+        image: registry.aliyuncs.com/syncxplus/nginx:1.11.10
+        restart: always
+        ports:
+            - '80:80'
+            - '443:443'
+        volumes:
+            - ./nginx:/etc/nginx/conf.d
+            - ./letsencrypt:/etc/letsencrypt
+        links:
+            - rancher:rancher
+        depends_on:
+            - rancher
+    rancher:
+        image: rancher/server:v1.5.7
+        restart: always
+        ports:
+            - '8080:8080'

@@ -1,0 +1,5 @@
+/*
+!/.gitignore
+!/nginx
+!/certbot
+!/docker-compose.yml
