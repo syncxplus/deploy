@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-docker-compose stop nginx
+nginx=`docker ps|grep nginx|awk '{print $NF}'`
+
+docker stop $nginx
 
 workdir=$(cd `dirname ${0}`; pwd)
 
@@ -26,4 +28,4 @@ else
     echo Unknown options $1
 fi
     
-docker-compose start nginx
+docker start $nginx
