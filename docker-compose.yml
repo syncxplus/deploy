@@ -1,7 +1,7 @@
 version: '2'
 services:
     gitlab:
-        image: 9.1.2-ce.0
+        image: gitlab/gitlab-ce:9.1.2-ce.0
         restart: always
         hostname: git.syncxplus.com
         ports:
