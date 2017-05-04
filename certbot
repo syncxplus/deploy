@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-nginx=`docker ps|grep nginx|awk '{print $NF}'`
-
-docker stop $nginx
-
 workdir=$(cd `dirname ${0}`; pwd)
+
+docker-compose stop nginx
 
 if [ "$1"x == createx ]; then
     echo create
@@ -12,12 +10,12 @@ if [ "$1"x == createx ]; then
         -v ${workdir}/letsencrypt:/etc/letsencrypt \
         registry.aliyuncs.com/syncxplus/letsencrypt:latest auth \
         --standalone -m jibo@outlook.com --agree-tos \
-        -d j.syncxplus.com
+        -d gitlab.syncxplus.com
     docker run --rm -p 80:80 -p 443:443 \
         -v ${workdir}/letsencrypt:/etc/letsencrypt \
         registry.aliyuncs.com/syncxplus/letsencrypt:latest auth \
         --standalone -m jibo@outlook.com --agree-tos \
-        -d r.syncxplus.com
+        -d jenkins.syncxplus.com
 elif [ "$1"x == renewx ] || [ "$1"x == x ]; then
     echo renew
     docker run --rm -p 80:80 -p 443:443 \
@@ -28,4 +26,4 @@ else
     echo Unknown options $1
 fi
     
-docker start $nginx
+docker-compose start nginx
