@@ -10,7 +10,7 @@ if [ "$1"x == createx ]; then
         -v ${workdir}/letsencrypt:/etc/letsencrypt \
         registry.aliyuncs.com/syncxplus/letsencrypt:latest auth \
         --standalone -m jibo@outlook.com --agree-tos \
-        -d gitlab.syncxplus.com
+        -d git.syncxplus.com
     docker run --rm -p 80:80 -p 443:443 \
         -v ${workdir}/letsencrypt:/etc/letsencrypt \
         registry.aliyuncs.com/syncxplus/letsencrypt:latest auth \

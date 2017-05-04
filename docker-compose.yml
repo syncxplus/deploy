@@ -23,7 +23,7 @@ services:
         ports:
             - '9527:9200'
     kibana:
-        images: kibana:4.6.4
+        image: kibana:4.6.4
         restart: always
         environment:
             ELASTICSEARCH_URL: 'http://elasticsearch:9200'
