@@ -19,21 +19,6 @@ services:
             - '50000:50000'
         volumes:
             - ./jenkins:/var/jenkins_home
-    elasticsearch:
-        image: elasticsearch:2.4.4-alpine
-        restart: always
-        ports:
-            - '9527:9200'
-    kibana:
-        image: kibana:4.6.4
-        restart: always
-        environment:
-            ELASTICSEARCH_URL: 'http://elasticsearch:9200'
-            NODE_OPTIONS: '--max-old-space-size=256'
-        depends_on:
-            - elasticsearch
-        links:
-            - elasticsearch:elasticsearch
     nginx:
         image: registry.aliyuncs.com/syncxplus/nginx:1.11.10
         restart: always
@@ -46,8 +31,6 @@ services:
         depends_on:
             - gitlab
             - jenkins
-            - kibana
         links:
             - gitlab:gitlab
             - jenkins:jenkins
-            - kibana:kibana
