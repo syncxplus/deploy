@@ -10,6 +10,33 @@ services:
             - ./gitlab/config:/etc/gitlab
             - ./gitlab/data:/var/opt/gitlab
             - ./gitlab/logs:/var/log/gitlab
+    memcached:
+        image: memcached:1.4.36-alpine
+        restart: always
+    postgres:
+        image: postgres:9.6.3-alpine
+        restart: always
+        environment:
+            - POSTGRES_USER=reviewboard
+        volumes:
+            - ./postgres:/var/lib/postgresql/data
+    reviewboard:
+        image: ikatson/reviewboard
+        restart: always
+        volumes:
+            - ./reviewboard/media:/media
+            - ./reviewboard/ssh:/root/.ssh
+            - ./reviewboard/www:/var/www/reviewboard
+            - ./gitlab/data/git-data/repositories:/data
+            - ./views.py:/usr/lib/python2.7/site-packages/djblets/feedview/views.py
+        depends_on:
+            - postgres
+            - memcached
+        environment:
+            DOMAIN: rb.syncxplus.com
+            MEMCACHED: memcached:11211
+            PGHOST: postgres
+            WAIT_FOR_POSTGRES: 'true'
     nginx:
         image: registry.aliyuncs.com/syncxplus/nginx:1.11.13
         restart: always
@@ -19,5 +46,7 @@ services:
             - ./nginx:/etc/nginx/conf.d
         depends_on:
             - gitlab
+            - reviewboard
         links:
             - gitlab:gitlab
+            - reviewboard:reviewboard
