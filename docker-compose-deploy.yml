@@ -1,0 +1,24 @@
+version: '2'
+services:
+    jenkins:
+        image: jenkins:2.46.2
+        restart: always
+        environment:
+            JAVA_OPTS: '-Duser.timezone=Asia/Shanghai'
+        ports:
+            - '50000:50000'
+        volumes:
+            - ./jenkins:/var/jenkins_home
+    nginx:
+        image: registry.aliyuncs.com/syncxplus/nginx:1.11.13
+        restart: always
+        ports:
+            - '80:80'
+            - '443:443'
+        volumes:
+            - ./nginx:/etc/nginx/conf.d
+            - ./letsencrypt:/etc/letsencrypt
+        depends_on:
+            - jenkins
+        links:
+            - jenkins:jenkins

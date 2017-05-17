@@ -10,11 +10,6 @@ if [ "$1"x == createx ]; then
         -v ${workdir}/letsencrypt:/etc/letsencrypt \
         registry.aliyuncs.com/syncxplus/letsencrypt:latest auth \
         --standalone -m jibo@outlook.com --agree-tos \
-        -d git.syncxplus.com
-    docker run --rm -p 80:80 -p 443:443 \
-        -v ${workdir}/letsencrypt:/etc/letsencrypt \
-        registry.aliyuncs.com/syncxplus/letsencrypt:latest auth \
-        --standalone -m jibo@outlook.com --agree-tos \
         -d jenkins.syncxplus.com
 elif [ "$1"x == renewx ] || [ "$1"x == x ]; then
     echo renew
