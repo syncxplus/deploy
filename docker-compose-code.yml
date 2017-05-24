@@ -37,6 +37,13 @@ services:
             MEMCACHED: memcached:11211
             PGHOST: postgres
             WAIT_FOR_POSTGRES: 'true'
+    zentao:
+        image: registry.aliyuncs.com/syncxplus/zentao:8.0
+        restart: always
+        volumes:
+            - ./zentao/tmp:/var/www/tmp
+            - ./zentao/config:/var/www/config
+            - ./zentao/data:/var/www/www/data
     nginx:
         image: registry.aliyuncs.com/syncxplus/nginx:1.11.13
         restart: always
@@ -47,6 +54,8 @@ services:
         depends_on:
             - gitlab
             - reviewboard
+            - zentao
         links:
             - gitlab:gitlab
             - reviewboard:reviewboard
+            - zentao:zentao
