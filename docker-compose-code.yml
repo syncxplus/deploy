@@ -37,6 +37,11 @@ services:
             MEMCACHED: memcached:11211
             PGHOST: postgres
             WAIT_FOR_POSTGRES: 'true'
+    wecenter:
+        image: registry.aliyuncs.com/syncxplus/php:5.6.30
+        restart: always
+        volumes:
+            - ./wecenter:/var/www/html
     zentao:
         image: registry.aliyuncs.com/syncxplus/zentao:8.0
         restart: always
@@ -54,8 +59,10 @@ services:
         depends_on:
             - gitlab
             - reviewboard
+            - wecenter
             - zentao
         links:
             - gitlab:gitlab
             - reviewboard:reviewboard
+            - wecenter:wecenter
             - zentao:zentao
