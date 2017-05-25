@@ -1,24 +1,22 @@
 #!/usr/bin/env bash
 
-workdir=$(cd `dirname ${0}`; pwd)
+workdir=$(cd `dirname $0`; pwd)
 
 docker-compose stop nginx
 
-if [ "$1"x == createx ]; then
-    echo create
-    docker run --rm -p 80:80 -p 443:443 \
-        -v ${workdir}/letsencrypt:/etc/letsencrypt \
-        registry.aliyuncs.com/syncxplus/letsencrypt:latest auth \
-        --standalone -m jibo@outlook.com --agree-tos \
-        -d jenkins.syncxplus.com
-elif [ "$1"x == renewx ] || [ "$1"x == x ]; then
+if [ "$1"x == renewx ] || [ "$1"x == x ]; then
     echo renew
     docker run --rm -p 80:80 -p 443:443 \
-        -v ${workdir}/letsencrypt:/etc/letsencrypt \
+        -v $workdir/letsencrypt:/etc/letsencrypt \
         registry.aliyuncs.com/syncxplus/letsencrypt:latest renew \
         --standalone
 else
-    echo Unknown options $1
+    echo create
+    docker run --rm -p 80:80 -p 443:443 \
+        -v $workdir/letsencrypt:/etc/letsencrypt \
+        registry.aliyuncs.com/syncxplus/letsencrypt:latest auth \
+        --standalone -m jibo@outlook.com --agree-tos \
+        -d $1.syncxplus.com
 fi
     
 docker-compose start nginx
