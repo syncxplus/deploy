@@ -10,6 +10,15 @@ services:
             - ./gitlab/config:/etc/gitlab
             - ./gitlab/data:/var/opt/gitlab
             - ./gitlab/logs:/var/log/gitlab
+    jenkins:
+        image: jenkins:2.46.2
+        restart: always
+        environment:
+            JAVA_OPTS: '-Duser.timezone=Asia/Shanghai'
+        ports:
+            - '50000:50000'
+        volumes:
+            - ./jenkins:/var/jenkins_home
     memcached:
         image: memcached:1.4.36-alpine
         restart: always
@@ -37,11 +46,6 @@ services:
             MEMCACHED: memcached:11211
             PGHOST: postgres
             WAIT_FOR_POSTGRES: 'true'
-    wecenter:
-        image: registry.aliyuncs.com/syncxplus/php:5.6.30
-        restart: always
-        volumes:
-            - ./wecenter:/var/www/html
     zentao:
         image: registry.aliyuncs.com/syncxplus/zentao:8.0
         restart: always
@@ -60,11 +64,11 @@ services:
             - ./letsencrypt:/etc/letsencrypt
         depends_on:
             - gitlab
+            - jenkins
             - reviewboard
-            - wecenter
             - zentao
         links:
             - gitlab:gitlab
+            - jenkins:jenkins
             - reviewboard:reviewboard
-            - wecenter:wecenter
             - zentao:zentao
