@@ -14,7 +14,7 @@ else
     echo create
     docker run --rm -p 80:80 -p 443:443 \
         -v $workdir/letsencrypt:/etc/letsencrypt \
-        registry.aliyuncs.com/syncxplus/letsencrypt:latest auth \
+        registry.aliyuncs.com/syncxplus/letsencrypt:latest certonly \
         --standalone -m jibo@outlook.com --agree-tos \
         -d $1.syncxplus.com
 fi
