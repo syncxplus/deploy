@@ -53,6 +53,21 @@ services:
             - ./zentao/tmp:/var/www/tmp
             - ./zentao/config:/var/www/config
             - ./zentao/data:/var/www/www/data
+    elasticsearch:
+        image: elasticsearch:2.4.6-alpine
+        restart: always
+        ports:
+            - '9527:9200'
+    kibana:
+        image: kibana:4.6.6
+        restart: always
+        environment:
+            ELASTICSEARCH_URL: 'http://elasticsearch:9200'
+            NODE_OPTIONS: '--max-old-space-size=256'
+        depends_on:
+            - elasticsearch
+        links:
+            - elasticsearch:elasticsearch
     nginx:
         image: registry.aliyuncs.com/syncxplus/nginx:1.11.13
         restart: always
@@ -65,10 +80,12 @@ services:
         depends_on:
             - gitlab
             - jenkins
+            - kibana
             - reviewboard
             - zentao
         links:
             - gitlab:gitlab
             - jenkins:jenkins
+            - kibana
             - reviewboard:reviewboard
             - zentao:zentao
